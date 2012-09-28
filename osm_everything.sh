@@ -226,22 +226,22 @@ SRC=\$HOME/src
 DATA=\$HOME/data
 DIFF_WORKDIR=\$DATA/.diffs
 
-YEAR=\$(date -r \$DATA/changes.osc.gz +%Y)
-MONTH=\$(date -r \$DATA/changes.osc.gz +%m)
-DAY=\$(date -r \$DATA/changes.osc.gz +%d)
-HOUR=\$(date -r \$DATA/changes.osc.gz +%k)
-MINUTE=\$(date -r \$DATA/changes.osc.gz +%M)
-SECOND=\$(date -r \$DATA/changes.osc.gz +%S)
+#YEAR=\$(date -r \$DATA/changes.osc.gz +%Y)
+#MONTH=\$(date -r \$DATA/changes.osc.gz +%m)
+#DAY=\$(date -r \$DATA/changes.osc.gz +%d)
+#HOUR=\$(date -r \$DATA/changes.osc.gz +%k)
+#MINUTE=\$(date -r \$DATA/changes.osc.gz +%M)
+#SECOND=\$(date -r \$DATA/changes.osc.gz +%S)
 
-rm -rf \$DIFF_WORKDIR/*
+#rm -rf \$DIFF_WORKDIR/*
 rm \$DATA/expire.list
 rm \$DATA/changes.osc.gz.prev
 cp \$DATA/changes.osc.gz \$DATA/changes.osc.gz.prev
 rm \$DATA/changes.osc.gz
 
-osmosis --read-replication-interval-init workingDirectory=\$DIFF_WORKDIR
-wget \"http://toolserver.org/~mazder/replicate-sequences/?Y=\$YEAR&m=\$MONTH&d=\$DAY&H=\$HOUR&i=\$MINUTE&s=\$SECOND&stream=minute#\" -O \$DIFF_WORKDIR/state.txt
-sed -i s/\"minute-replicate\"/\"replication\/minute\"/ \$DIFF_WORKDIR/configuration.txt
+#osmosis --read-replication-interval-init workingDirectory=\$DIFF_WORKDIR
+#wget \"http://toolserver.org/~mazder/replicate-sequences/?Y=\$YEAR&m=\$MONTH&d=\$DAY&H=\$HOUR&i=\$MINUTE&s=\$SECOND&stream=minute#\" -O \$DIFF_WORKDIR/state.txt
+#sed -i s/\"minute-replicate\"/\"replication\/minute\"/ \$DIFF_WORKDIR/configuration.txt
 osmosis -q --rri workingDirectory=\$DIFF_WORKDIR --simc --write-xml-change \$DATA/changes.osc.gz
 osm2pgsql -a -s -b \"\$MIN_LON,\$MIN_LAT,\$MAX_LON,\$MAX_LAT\" -U postgres -d \$DB_NAME -e 15 -o \$DATA/expire.list \$DATA/changes.osc.gz" > $DATA/update_osm_db.sh
 
