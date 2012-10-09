@@ -271,7 +271,15 @@ osm2pgsql -a -s -b \"\$MIN_LON,\$MIN_LAT,\$MAX_LON,\$MAX_LAT\" -U postgres -d \$
 	rm mycron
 fi
 
-# Set up the mapnik stylesheet
+# Setup Mapnik for OSM basics
+chmod +x mapnik/generate_image.py
+chmod +x mapnik/generate_tiles.py
+mapnik/generate_image.py
+cp image.png /var/www
+IP=$(curl ifconfig.me)
+echo "Go to http://$IP/image.png to see."
+
+# Get shapefile data
 sudo apt-get -y install unzip
 cd $DATA
 mkdir shp
@@ -334,7 +342,7 @@ $BIN/mod_tile/renderd
 
 # Add our sample map.html to /var/ww
 cd $SETUP
-cp map.html /var/www/map.html
+cp mapnik/map.html /var/www/map.html
 sed -i s/"TILE_LOCATION"/"$IP\/my_tiles"/ /var/www/map.html
 echo "Go to http://$IP/map.html to see."
 
@@ -343,53 +351,26 @@ echo "Go to http://$IP/map.html to see."
 
 
 
-### AWESOME!! ###
-# Next Steps #
-#
-# Setup mod_tile and renderd
-# Make an OSM stylesheet that works
-# Make an OpenLayers example that works with the tiles available at http://this_host/index.html
-
-
-# Setup Mapnik for OSM basics
-chmod +x mapnik/generate_image.py
-chmod +x mapnik/generate_tiles.py
-mapnik/generate_image.py
 
 
 
 
-Just before bed let me write out my goals for these scripts:
-I don't care really how they are ordered but they should accomplish:
-- install postgis
-- create osm database
-- install osm2pgsql
-- install osmosis
-- import data into database
-
-- setup minutely mapnik updates to database using diffs and a bounding box
-- install mapnik
-- install mapnik tools (if necessary? - test without)
-- install mod_tile and renderd
-
-- go back and add in multilingualism into rendering
-
-- install mapserver wms
-- install sds
-later:
-- install osm routing engine
+#- install mapserver wms
+#- install sds
+#later:
+#- install osm routing engine
 
 
 # Get the planet
-wget http://planet.openstreetmap.org/planet/planet-latest.osm.bz2
+#wget http://planet.openstreetmap.org/planet/planet-latest.osm.bz2
 
 # Extract the Caucasus
-bzcat planet-latest.osm.bz2 | osmosis\
-  --read-xml enableDateParsing=no file=-\
-  --bounding-box top=43.92 left=39.04 bottom=37.76 right=51.46 --write-xml file=-\
-  | bzip2 > caucasus.osm.bz2
+#bzcat planet-latest.osm.bz2 | osmosis\
+#  --read-xml enableDateParsing=no file=-\
+#  --bounding-box top=43.92 left=39.04 bottom=37.76 right=51.46 --write-xml file=-\
+#  | bzip2 > caucasus.osm.bz2
 
 # Extract via polygon
-osmosis --read-xml file="planet-latest.osm" --bounding-polygon file="country.poly" --write-xml file="australia.osm"
+#osmosis --read-xml file="planet-latest.osm" --bounding-polygon file="country.poly" --write-xml file="australia.osm"
 
 
