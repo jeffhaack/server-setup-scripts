@@ -2,16 +2,6 @@
 <!DOCTYPE Map[]>
 <Map srs="+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over" font-directory="./fonts" background-color="#c4dff6" maximum-extent="-20037508.34,-20037508.34,20037508.34,20037508.34">
 
-<Parameters>
-  <Parameter name="bounds">-180,-85.0511,180,85.0511</Parameter>
-  <Parameter name="center">0,20,4</Parameter>
-  <Parameter name="format">png</Parameter>
-  <Parameter name="minzoom">0</Parameter>
-  <Parameter name="maxzoom">18</Parameter>
-  <Parameter name="attribution"><![CDATA[Data © OpenStreetMap (and) contributors, CC-BY-SA]]></Parameter>
-  <Parameter name="name"><![CDATA[OSM Bright for server-setup]]></Parameter>
-</Parameters>
-
 <FontSet name="fontset-0">
   <Font face-name="Open Sans Semibold"/>
   <Font face-name="DejaVu Sans Book"/>
@@ -44,7 +34,7 @@
     <StyleName>land</StyleName>
     <Datasource>
        <Parameter name="dbname"><![CDATA[osm2]]></Parameter>
-       <Parameter name="extent"><![CDATA[-20037508.34 -20037508.34 20037508.34 20037508.34]]></Parameter>
+       listing
        <Parameter name="file"><![CDATA[/root/data/shp/10m-land.shp]]></Parameter>
        <Parameter name="host"><![CDATA[198.61.219.70]]></Parameter>
        <Parameter name="id"><![CDATA[land]]></Parameter>
@@ -209,7 +199,7 @@
     <StyleName>landuse_gen0</StyleName>
     <Datasource>
        <Parameter name="dbname"><![CDATA[osm2]]></Parameter>
-       <Parameter name="extent"><![CDATA[-20037508.34 -20037508.34 20037508.34 20037508.34]]></Parameter>
+       
        <Parameter name="geometry_field"><![CDATA[way]]></Parameter>
        <Parameter name="host"><![CDATA[198.61.219.70]]></Parameter>
        <Parameter name="id"><![CDATA[landuse_gen0]]></Parameter>
@@ -349,7 +339,7 @@
     <StyleName>landuse_gen1</StyleName>
     <Datasource>
        <Parameter name="dbname"><![CDATA[osm2]]></Parameter>
-       <Parameter name="extent"><![CDATA[-20037508.34 -20037508.34 20037508.34 20037508.34]]></Parameter>
+       
        <Parameter name="geometry_field"><![CDATA[way]]></Parameter>
        <Parameter name="host"><![CDATA[198.61.219.70]]></Parameter>
        <Parameter name="id"><![CDATA[landuse_gen1]]></Parameter>
@@ -470,7 +460,7 @@
     <StyleName>landuse</StyleName>
     <Datasource>
        <Parameter name="dbname"><![CDATA[osm2]]></Parameter>
-       <Parameter name="extent"><![CDATA[-20037508.34 -20037508.34 20037508.34 20037508.34]]></Parameter>
+       
        <Parameter name="geometry_field"><![CDATA[way]]></Parameter>
        <Parameter name="host"><![CDATA[198.61.219.70]]></Parameter>
        <Parameter name="id"><![CDATA[landuse]]></Parameter>
@@ -520,7 +510,7 @@
     <StyleName>waterway_low</StyleName>
     <Datasource>
        <Parameter name="dbname"><![CDATA[osm2]]></Parameter>
-       <Parameter name="extent"><![CDATA[-20037508.34 -20037508.34 20037508.34 20037508.34]]></Parameter>
+       
        <Parameter name="geometry_field"><![CDATA[way]]></Parameter>
        <Parameter name="host"><![CDATA[198.61.219.70]]></Parameter>
        <Parameter name="id"><![CDATA[waterway]]></Parameter>
@@ -585,7 +575,7 @@
     <StyleName>waterway_med</StyleName>
     <Datasource>
        <Parameter name="dbname"><![CDATA[osm2]]></Parameter>
-       <Parameter name="extent"><![CDATA[-20037508.34 -20037508.34 20037508.34 20037508.34]]></Parameter>
+       
        <Parameter name="geometry_field"><![CDATA[way]]></Parameter>
        <Parameter name="host"><![CDATA[198.61.219.70]]></Parameter>
        <Parameter name="key_field"><![CDATA[]]></Parameter>
@@ -779,7 +769,7 @@
     <StyleName>waterway_high</StyleName>
     <Datasource>
        <Parameter name="dbname"><![CDATA[osm2]]></Parameter>
-       <Parameter name="extent"><![CDATA[-20037508.34 -20037508.34 20037508.34 20037508.34]]></Parameter>
+       
        <Parameter name="geometry_field"><![CDATA[way]]></Parameter>
        <Parameter name="host"><![CDATA[198.61.219.70]]></Parameter>
        <Parameter name="key_field"><![CDATA[]]></Parameter>
@@ -806,7 +796,7 @@
     <StyleName>water_gen0</StyleName>
     <Datasource>
        <Parameter name="dbname"><![CDATA[osm2]]></Parameter>
-       <Parameter name="extent"><![CDATA[-20037508.34 -20037508.34 20037508.34 20037508.34]]></Parameter>
+       
        <Parameter name="geometry_field"><![CDATA[way]]></Parameter>
        <Parameter name="host"><![CDATA[198.61.219.70]]></Parameter>
        <Parameter name="id"><![CDATA[water_gen0]]></Parameter>
@@ -838,7 +828,7 @@
     <StyleName>water_gen1</StyleName>
     <Datasource>
        <Parameter name="dbname"><![CDATA[osm2]]></Parameter>
-       <Parameter name="extent"><![CDATA[-20037508.34 -20037508.34 20037508.34 20037508.34]]></Parameter>
+       
        <Parameter name="geometry_field"><![CDATA[way]]></Parameter>
        <Parameter name="host"><![CDATA[198.61.219.70]]></Parameter>
        <Parameter name="id"><![CDATA[water_gen1]]></Parameter>
@@ -869,7 +859,7 @@
     <StyleName>water</StyleName>
     <Datasource>
        <Parameter name="dbname"><![CDATA[osm2]]></Parameter>
-       <Parameter name="extent"><![CDATA[-20037508.34 -20037508.34 20037508.34 20037508.34]]></Parameter>
+       
        <Parameter name="geometry_field"><![CDATA[way]]></Parameter>
        <Parameter name="host"><![CDATA[198.61.219.70]]></Parameter>
        <Parameter name="id"><![CDATA[water]]></Parameter>
@@ -946,7 +936,7 @@
     <StyleName>landuse_overlays</StyleName>
     <Datasource>
        <Parameter name="dbname"><![CDATA[osm2]]></Parameter>
-       <Parameter name="extent"><![CDATA[-20037508.34 -20037508.34 20037508.34 20037508.34]]></Parameter>
+       
        <Parameter name="geometry_field"><![CDATA[way]]></Parameter>
        <Parameter name="host"><![CDATA[198.61.219.70]]></Parameter>
        <Parameter name="id"><![CDATA[landuse_overlays]]></Parameter>
@@ -994,7 +984,7 @@
     <StyleName>admin</StyleName>
     <Datasource>
        <Parameter name="dbname"><![CDATA[osm2]]></Parameter>
-       <Parameter name="extent"><![CDATA[-20037508.34 -20037508.34 20037508.34 20037508.34]]></Parameter>
+       
        <Parameter name="geometry_field"><![CDATA[way]]></Parameter>
        <Parameter name="host"><![CDATA[198.61.219.70]]></Parameter>
        <Parameter name="id"><![CDATA[admin]]></Parameter>
@@ -1085,7 +1075,7 @@
     <StyleName>buildings</StyleName>
     <Datasource>
        <Parameter name="dbname"><![CDATA[osm2]]></Parameter>
-       <Parameter name="extent"><![CDATA[-20037508.34 -20037508.34 20037508.34 20037508.34]]></Parameter>
+       
        <Parameter name="geometry_field"><![CDATA[way]]></Parameter>
        <Parameter name="host"><![CDATA[198.61.219.70]]></Parameter>
        <Parameter name="key_field"><![CDATA[]]></Parameter>
@@ -1218,7 +1208,7 @@
     <StyleName>aeroway</StyleName>
     <Datasource>
        <Parameter name="dbname"><![CDATA[osm2]]></Parameter>
-       <Parameter name="extent"><![CDATA[-20037508.34 -20037508.34 20037508.34 20037508.34]]></Parameter>
+       
        <Parameter name="geometry_field"><![CDATA[way]]></Parameter>
        <Parameter name="host"><![CDATA[198.61.219.70]]></Parameter>
        <Parameter name="id"><![CDATA[aeroway]]></Parameter>
@@ -15906,7 +15896,7 @@
     <StyleName>tunnel</StyleName>
     <Datasource>
        <Parameter name="dbname"><![CDATA[osm2]]></Parameter>
-       <Parameter name="extent"><![CDATA[-20037508.34 -20037508.34 20037508.34 20037508.34]]></Parameter>
+       
        <Parameter name="geometry_field"><![CDATA[way]]></Parameter>
        <Parameter name="host"><![CDATA[198.61.219.70]]></Parameter>
        <Parameter name="id"><![CDATA[tunnel]]></Parameter>
@@ -15971,7 +15961,7 @@
     <StyleName>turning_circle_case</StyleName>
     <Datasource>
        <Parameter name="dbname"><![CDATA[osm2]]></Parameter>
-       <Parameter name="extent"><![CDATA[-20037508.34 -20037508.34 20037508.34 20037508.34]]></Parameter>
+       
        <Parameter name="geometry_field"><![CDATA[way]]></Parameter>
        <Parameter name="host"><![CDATA[198.61.219.70]]></Parameter>
        <Parameter name="id"><![CDATA[turning_circle_case]]></Parameter>
@@ -30600,7 +30590,7 @@
     <StyleName>roads_high</StyleName>
     <Datasource>
        <Parameter name="dbname"><![CDATA[osm2]]></Parameter>
-       <Parameter name="extent"><![CDATA[-20037508.34 -20037508.34 20037508.34 20037508.34]]></Parameter>
+       
        <Parameter name="geometry_field"><![CDATA[way]]></Parameter>
        <Parameter name="host"><![CDATA[198.61.219.70]]></Parameter>
        <Parameter name="id"><![CDATA[roads_high]]></Parameter>
@@ -30713,7 +30703,7 @@
     <StyleName>roads_med</StyleName>
     <Datasource>
        <Parameter name="dbname"><![CDATA[osm2]]></Parameter>
-       <Parameter name="extent"><![CDATA[-20037508.34 -20037508.34 20037508.34 20037508.34]]></Parameter>
+       
        <Parameter name="geometry_field"><![CDATA[way]]></Parameter>
        <Parameter name="host"><![CDATA[198.61.219.70]]></Parameter>
        <Parameter name="key_field"><![CDATA[]]></Parameter>
@@ -30783,7 +30773,7 @@
     <StyleName>roads_low</StyleName>
     <Datasource>
        <Parameter name="dbname"><![CDATA[osm2]]></Parameter>
-       <Parameter name="extent"><![CDATA[-20037508.34 -20037508.34 20037508.34 20037508.34]]></Parameter>
+       
        <Parameter name="geometry_field"><![CDATA[way]]></Parameter>
        <Parameter name="host"><![CDATA[198.61.219.70]]></Parameter>
        <Parameter name="key_field"><![CDATA[]]></Parameter>
@@ -30828,7 +30818,7 @@
     <StyleName>turning_circle_fill</StyleName>
     <Datasource>
        <Parameter name="dbname"><![CDATA[osm2]]></Parameter>
-       <Parameter name="extent"><![CDATA[-20037508.34 -20037508.34 20037508.34 20037508.34]]></Parameter>
+       
        <Parameter name="geometry_field"><![CDATA[way]]></Parameter>
        <Parameter name="host"><![CDATA[198.61.219.70]]></Parameter>
        <Parameter name="key_field"><![CDATA[]]></Parameter>
@@ -45514,7 +45504,7 @@
     <StyleName>bridge</StyleName>
     <Datasource>
        <Parameter name="dbname"><![CDATA[osm2]]></Parameter>
-       <Parameter name="extent"><![CDATA[-20037508.34 -20037508.34 20037508.34 20037508.34]]></Parameter>
+       
        <Parameter name="geometry_field"><![CDATA[way]]></Parameter>
        <Parameter name="host"><![CDATA[198.61.219.70]]></Parameter>
        <Parameter name="id"><![CDATA[bridge]]></Parameter>
@@ -47644,7 +47634,7 @@
     <StyleName>area_label</StyleName>
     <Datasource>
        <Parameter name="dbname"><![CDATA[osm2]]></Parameter>
-       <Parameter name="extent"><![CDATA[-20037508.34 -20037508.34 20037508.34 20037508.34]]></Parameter>
+       
        <Parameter name="geometry_field"><![CDATA[way]]></Parameter>
        <Parameter name="host"><![CDATA[198.61.219.70]]></Parameter>
        <Parameter name="id"><![CDATA[area_label]]></Parameter>
@@ -50584,7 +50574,7 @@
     <StyleName>motorway_label</StyleName>
     <Datasource>
        <Parameter name="dbname"><![CDATA[osm2]]></Parameter>
-       <Parameter name="extent"><![CDATA[-20037508.34 -20037508.34 20037508.34 20037508.34]]></Parameter>
+       
        <Parameter name="geometry_field"><![CDATA[way]]></Parameter>
        <Parameter name="host"><![CDATA[198.61.219.70]]></Parameter>
        <Parameter name="id"><![CDATA[motorway_label]]></Parameter>
@@ -50815,7 +50805,7 @@
     <StyleName>mainroad_label</StyleName>
     <Datasource>
        <Parameter name="dbname"><![CDATA[osm2]]></Parameter>
-       <Parameter name="extent"><![CDATA[-20037508.34 -20037508.34 20037508.34 20037508.34]]></Parameter>
+       
        <Parameter name="geometry_field"><![CDATA[way]]></Parameter>
        <Parameter name="host"><![CDATA[198.61.219.70]]></Parameter>
        <Parameter name="id"><![CDATA[mainroad_label]]></Parameter>
@@ -50897,7 +50887,7 @@
     <StyleName>minorroad_label</StyleName>
     <Datasource>
        <Parameter name="dbname"><![CDATA[osm2]]></Parameter>
-       <Parameter name="extent"><![CDATA[-20037508.34 -20037508.34 20037508.34 20037508.34]]></Parameter>
+       
        <Parameter name="geometry_field"><![CDATA[way]]></Parameter>
        <Parameter name="host"><![CDATA[198.61.219.70]]></Parameter>
        <Parameter name="id"><![CDATA[minorroad_label]]></Parameter>
@@ -50980,7 +50970,7 @@
     <StyleName>waterway_label</StyleName>
     <Datasource>
        <Parameter name="dbname"><![CDATA[osm2]]></Parameter>
-       <Parameter name="extent"><![CDATA[-20037508.34 -20037508.34 20037508.34 20037508.34]]></Parameter>
+       
        <Parameter name="geometry_field"><![CDATA[way]]></Parameter>
        <Parameter name="host"><![CDATA[198.61.219.70]]></Parameter>
        <Parameter name="id"><![CDATA[waterway_label]]></Parameter>
