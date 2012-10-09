@@ -17,6 +17,7 @@
 ########## USER OPTIONS - DON'T CHANGE UNLESS YOU KNOW WHAT YOU'RE DOING ###########
 EXPORT_FILE="http://download.geofabrik.de/openstreetmap/asia/gaza.osm.bz2" 	# The file you want to download and import
 OSM_FILE="gaza.osm.bz2"
+LANGUAGE="name:ka" # add a name tag into the database (your stylesheet still must utilize this)
 # We need the bounding box of this area
 MIN_LON="34.125" 	# left
 MIN_LAT="31.16" 	# bottom
@@ -33,6 +34,7 @@ SRC=$HOME/src
 DATA=$HOME/data
 BIN=$HOME/bin
 DIFF_WORKDIR=$DATA/.diffs
+OSM2PGSQL_STYLESHEET=$DATA/multilingual.style
 
 # Program Locations - we will install these programs if they don't already exist
 POSTGRESQL=/etc/init.d/postgresql
@@ -168,7 +170,13 @@ if [[ "$make_osm" == [Yy] && "$get_data" == [Yy] ]]; then
 		import_data="y"
 	fi
 	if [[ "$import_data" == [Yy] ]]; then
-		osm2pgsql --slim -U postgres -d $DB_NAME -C 2048 $DATA/$OSM_FILE
+		##############################
+		### Making it multilingual ###
+		cp /usr/share/osm2pgsql/default.style $OSM2PGSQL_STYLESHEET
+		echo "node,way   $LANGUAGE      text         linear" >> $OSM2PGSQL_STYLESHEET
+		##############################
+
+		osm2pgsql --slim -U postgres -d $DB_NAME -S $OSM2PGSQL_STYLESHEET -C 2048 $DATA/$OSM_FILE
 	fi
 else
 	echo "Not importing file into database..."
@@ -205,7 +213,7 @@ if [[ "$update_diffs" == [Yy] ]]; then
 	wget "http://toolserver.org/~mazder/replicate-sequences/?Y=$YEAR&m=$MONTH&d=$DAY&H=$HOUR&i=$MINUTE&s=$SECOND&stream=minute#" -O $DIFF_WORKDIR/state.txt
 	sed -i s/"minute-replicate"/"replication\/minute"/ $DIFF_WORKDIR/configuration.txt
 	osmosis -q --rri workingDirectory=$DIFF_WORKDIR --simc --write-xml-change $DATA/changes.osc.gz
-	osm2pgsql -a -s -b "$MIN_LON,$MIN_LAT,$MAX_LON,$MAX_LAT" -U postgres -d $DB_NAME -e 15 -o $DATA/expire.list $DATA/changes.osc.gz
+	osm2pgsql -a -s -b "$MIN_LON,$MIN_LAT,$MAX_LON,$MAX_LAT" -U postgres -d $DB_NAME -e 15 -o $DATA/expire.list -S $OSM2PGSQL_STYLESHEET $DATA/changes.osc.gz
 fi
 
 # Setup Cron Job
@@ -251,7 +259,7 @@ rm \$DATA/changes.osc.gz
 #wget \"http://toolserver.org/~mazder/replicate-sequences/?Y=\$YEAR&m=\$MONTH&d=\$DAY&H=\$HOUR&i=\$MINUTE&s=\$SECOND&stream=minute#\" -O \$DIFF_WORKDIR/state.txt
 #sed -i s/\"minute-replicate\"/\"replication\/minute\"/ \$DIFF_WORKDIR/configuration.txt
 osmosis -q --rri workingDirectory=\$DIFF_WORKDIR --simc --write-xml-change \$DATA/changes.osc.gz
-osm2pgsql -a -s -b \"\$MIN_LON,\$MIN_LAT,\$MAX_LON,\$MAX_LAT\" -U postgres -d \$DB_NAME -e 15 -o \$DATA/expire.list \$DATA/changes.osc.gz" > $DATA/update_osm_db.sh
+osm2pgsql -a -s -b \"\$MIN_LON,\$MIN_LAT,\$MAX_LON,\$MAX_LAT\" -U postgres -d \$DB_NAME -e 15 -o \$DATA/expire.list -S $OSM2PGSQL_STYLESHEET \$DATA/changes.osc.gz" > $DATA/update_osm_db.sh
 
 	chmod +x $DATA/update_osm_db.sh
 	#write out current crontab
@@ -262,6 +270,17 @@ osm2pgsql -a -s -b \"\$MIN_LON,\$MIN_LAT,\$MAX_LON,\$MAX_LAT\" -U postgres -d \$
 	crontab mycron
 	rm mycron
 fi
+
+# Set up the mapnik stylesheet
+sudo apt-get -y install unzip
+cd $DATA
+mkdir shp
+wget http://mapbox-geodata.s3.amazonaws.com/natural-earth-1.3.0/physical/10m-land.zip
+wget http://tilemill-data.s3.amazonaws.com/osm/coastline-good.zip
+wget http://tilemill-data.s3.amazonaws.com/osm/shoreline_300.zip
+unzip 10m-land.zip
+unzip coastline-good.zip
+unzip shoreline_300.zip
 
 
 # Set up mod_tile and renderd
@@ -313,12 +332,12 @@ HOST=198.101.248.107
 $BIN/mod_tile/renderd
 /etc/init.d/apache2 restart
 
-# Add our sample index.html to /var/ww
+# Add our sample map.html to /var/ww
 cd $SETUP
-sed -i s/"TILE_LOCATION"/"$IP\/my_tiles"/ index.html
-cp index.html /var/www/map.html
+cp map.html /var/www/map.html
+sed -i s/"TILE_LOCATION"/"$IP\/my_tiles"/ /var/www/map.html
+echo "Go to http://$IP/map.html to see."
 
-echo "Go to $IP/my_tiles/9/304/208.png to see."
 ################################################################################################
 
 
