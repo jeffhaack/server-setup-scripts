@@ -28,6 +28,7 @@ CRON_TIME="0,5,10,15,20,25,30,35,40,45,50,55 * * * *" 	# How often should the da
 
 # Directories
 HOME=~
+SETUP=$HOME/server-setup-scripts
 SRC=$HOME/src
 DATA=$HOME/data
 BIN=$HOME/bin
@@ -311,9 +312,13 @@ HOST=198.101.248.107
 # And start up the daemon and restart Apache
 $BIN/mod_tile/renderd
 /etc/init.d/apache2 restart
+
+# Add our sample index.html to /var/ww
+cd $SETUP
+sed -i s/"TILE_LOCATION"/"$IP\/my_tiles"/ index.html
+cp index.html /var/www/map.html
+
 echo "Go to $IP/my_tiles/9/304/208.png to see."
-
-
 ################################################################################################
 
 
