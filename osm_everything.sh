@@ -30,6 +30,7 @@ CRON_TIME="0,5,10,15,20,25,30,35,40,45,50,55 * * * *" 	# How often should the da
 HOME=~
 SRC=$HOME/src
 DATA=$HOME/data
+BIN=$HOME/bin
 DIFF_WORKDIR=$DATA/.diffs
 
 # Program Locations - we will install these programs if they don't already exist
@@ -64,6 +65,12 @@ if [ ! -d $DATA ]; then
 	mkdir $DATA
 else
 	echo "Directory $DATA exists"
+fi
+if [ ! -d $BIN ]; then
+	echo "Making directory $BIN"
+	mkdir $BIN
+else
+	echo "Directory $BIN exists"
 fi
 
 # Install PostGIS
@@ -255,7 +262,62 @@ osm2pgsql -a -s -b \"\$MIN_LON,\$MIN_LAT,\$MAX_LON,\$MAX_LAT\" -U postgres -d \$
 	rm mycron
 fi
 
+
+# Set up mod_tile and renderd
+# First retrieve and install the stuff
+cd $BIN
+sudo apt-get -y install subversion autoconf make
+sudo apt-get -y install libagg-dev apache2-prefork-dev
+svn co http://svn.openstreetmap.org/applications/utils/mod_tile
+cd mod_tile
+./autogen.sh
+sed -i s/"#define MAPNIK_PLUGINS \"\/usr\/local\/lib64\/mapnik\/input\""/"#define MAPNIK_PLUGINS \"\/usr\/lib64\/mapnik\/0.7\/input\/\""/ render_config.h
+sed -i s/"\/usr\/local\/lib64\/mapnik\/fonts"/"\/usr\/share\/fonts"/ render_config.h
+sed -i s/"#define FONT_RECURSE 0"/"#define FONT_RECURSE 3"/ render_config.h
+./configure
+make
+make install
+make install-mod_tile
+ldconfig
+
+# Edit the apache module settings in mod_tile.conf
+cp mod_tile.conf /etc/apache2/conf.d
+sed -i s/"<VirtualHost *:80>"/"<VirtualHost *>"/ /etc/apache2/conf.d/mod_tile.conf
+sed -i s/"modules\/mod_tile.so"/"\/usr\/lib\/apache2\/modules\/mod_tile.so"/ /etc/apache2/conf.d/mod_tile.conf
+IP=$(curl ifconfig.me)
+sed -i s/"a.tile.openstreetmap.org b.tile.openstreetmap.org c.tile.openstreetmap.org d.tile.openstreetmap.org"/"$IP"/ /etc/apache2/conf.d/mod_tile.conf
+sed -i s/"\/var\/www\/html"/"\/var\/www"/ /etc/apache2/conf.d/mod_tile.conf
+sed -i s/"\/var\/run\/renderd\/renderd.sock"/"\/tmp\/osm-renderd"/ /etc/apache2/conf.d/mod_tile.conf
+
+# Now edit the renderd daemon settings
+touch /etc/renderd.conf
+echo "[renderd]
+;socketname=/var/run/renderd/renderd.sock
+num_threads=4
+tile_dir=/var/lib/mod_tile ; DOES NOT WORK YET
+stats_file=/root/bin/renderd.stats
+
+[mapnik]
+plugins_dir=/usr/lib64/mapnik/0.7/input
+font_dir=/usr/share/fonts
+font_dir_recurse=3
+
+[default]
+URI=/my_tiles/
+XML=/root/server-setup-scripts/mapnik/osm.xml
+HOST=198.101.248.107
+;HTCPHOST=proxy.openstreetmap.org" > /etc/renderd.conf
+
+# And start up the daemon and restart Apache
+$BIN/mod_tile/renderd
+/etc/init.d/apache2 restart
+echo "Go to $IP/my_tiles/9/304/208.png to see."
+
+
 ################################################################################################
+
+
+
 
 ### AWESOME!! ###
 # Next Steps #
