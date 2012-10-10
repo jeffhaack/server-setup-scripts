@@ -171,14 +171,14 @@ fi
 
 ######
 # This installs the osm mapnik tools, basically gets the big shapefiles we needs and gives a fallback stylsheet
-#cd $SRC
-#sudo apt-get -y install subversion unzip
-#svn co http://svn.openstreetmap.org/applications/rendering/mapnik
-#cd mapnik
-#./get-coastlines.sh
-#./generate_xml.py --dbname osm --user postgres --accept-none
-#./generate_image.py
-#cp image.png /var/www
+cd $SRC
+sudo apt-get -y install subversion unzip
+svn co http://svn.openstreetmap.org/applications/rendering/mapnik
+cd mapnik
+./get-coastlines.sh
+./generate_xml.py --dbname osm --user postgres --accept-none
+./generate_image.py
+cp image.png /var/www
 #####
 
 # Setup Minutely Mapnik updates
@@ -286,7 +286,7 @@ echo "Go to http://$IP/image.png to see."
 
 
 # see http://switch2osm.org/serving-tiles/building-a-tile-server-from-packages/
-sudo apt-get install libapache2-mod-tile
+sudo apt-get -y install libapache2-mod-tile
 touch /var/lib/mod_tile/planet-import-complete # the timestamp on this will tell mod_tile when to re-render tiles (shouldn't be useful for me though, cause i need an expiry list)
 
 # Edit /etc/apache2/sites-available/tileserver_site
