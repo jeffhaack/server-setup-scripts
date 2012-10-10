@@ -33,10 +33,10 @@
   srs="+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over">
     <StyleName>land</StyleName>
     <Datasource>
-       <Parameter name="dbname"><![CDATA[osm2]]></Parameter>
+       <Parameter name="dbname"><![CDATA[osm]]></Parameter>
        listing
        <Parameter name="file"><![CDATA[/root/data/shp/10m-land.shp]]></Parameter>
-       <Parameter name="host"><![CDATA[198.61.219.70]]></Parameter>
+       <Parameter name="host"><![CDATA[localhost]]></Parameter>
        <Parameter name="id"><![CDATA[land]]></Parameter>
        <Parameter name="port"><![CDATA[5432]]></Parameter>
        <Parameter name="project"><![CDATA[foss4g-2011]]></Parameter>
@@ -198,7 +198,7 @@
   srs="+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over">
     <StyleName>landuse_gen0</StyleName>
     <Datasource>
-       <Parameter name="dbname"><![CDATA[osm2]]></Parameter>
+       <Parameter name="dbname"><![CDATA[osm]]></Parameter>
        
        <Parameter name="geometry_field"><![CDATA[way]]></Parameter>
        <Parameter name="host"><![CDATA[198.61.219.70]]></Parameter>
@@ -338,7 +338,7 @@
   srs="+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over">
     <StyleName>landuse_gen1</StyleName>
     <Datasource>
-       <Parameter name="dbname"><![CDATA[osm2]]></Parameter>
+       <Parameter name="dbname"><![CDATA[osm]]></Parameter>
        
        <Parameter name="geometry_field"><![CDATA[way]]></Parameter>
        <Parameter name="host"><![CDATA[198.61.219.70]]></Parameter>
@@ -459,7 +459,7 @@
   srs="+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over">
     <StyleName>landuse</StyleName>
     <Datasource>
-       <Parameter name="dbname"><![CDATA[osm2]]></Parameter>
+       <Parameter name="dbname"><![CDATA[osm]]></Parameter>
        
        <Parameter name="geometry_field"><![CDATA[way]]></Parameter>
        <Parameter name="host"><![CDATA[198.61.219.70]]></Parameter>
@@ -509,7 +509,7 @@
   srs="+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over">
     <StyleName>waterway_low</StyleName>
     <Datasource>
-       <Parameter name="dbname"><![CDATA[osm2]]></Parameter>
+       <Parameter name="dbname"><![CDATA[osm]]></Parameter>
        
        <Parameter name="geometry_field"><![CDATA[way]]></Parameter>
        <Parameter name="host"><![CDATA[198.61.219.70]]></Parameter>
@@ -574,7 +574,7 @@
   srs="+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over">
     <StyleName>waterway_med</StyleName>
     <Datasource>
-       <Parameter name="dbname"><![CDATA[osm2]]></Parameter>
+       <Parameter name="dbname"><![CDATA[osm]]></Parameter>
        
        <Parameter name="geometry_field"><![CDATA[way]]></Parameter>
        <Parameter name="host"><![CDATA[198.61.219.70]]></Parameter>
@@ -768,7 +768,7 @@
   srs="+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over">
     <StyleName>waterway_high</StyleName>
     <Datasource>
-       <Parameter name="dbname"><![CDATA[osm2]]></Parameter>
+       <Parameter name="dbname"><![CDATA[osm]]></Parameter>
        
        <Parameter name="geometry_field"><![CDATA[way]]></Parameter>
        <Parameter name="host"><![CDATA[198.61.219.70]]></Parameter>
@@ -795,7 +795,7 @@
   srs="+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over">
     <StyleName>water_gen0</StyleName>
     <Datasource>
-       <Parameter name="dbname"><![CDATA[osm2]]></Parameter>
+       <Parameter name="dbname"><![CDATA[osm]]></Parameter>
        
        <Parameter name="geometry_field"><![CDATA[way]]></Parameter>
        <Parameter name="host"><![CDATA[198.61.219.70]]></Parameter>
@@ -827,7 +827,7 @@
   srs="+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over">
     <StyleName>water_gen1</StyleName>
     <Datasource>
-       <Parameter name="dbname"><![CDATA[osm2]]></Parameter>
+       <Parameter name="dbname"><![CDATA[osm]]></Parameter>
        
        <Parameter name="geometry_field"><![CDATA[way]]></Parameter>
        <Parameter name="host"><![CDATA[198.61.219.70]]></Parameter>
@@ -858,7 +858,7 @@
   srs="+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over">
     <StyleName>water</StyleName>
     <Datasource>
-       <Parameter name="dbname"><![CDATA[osm2]]></Parameter>
+       <Parameter name="dbname"><![CDATA[osm]]></Parameter>
        
        <Parameter name="geometry_field"><![CDATA[way]]></Parameter>
        <Parameter name="host"><![CDATA[198.61.219.70]]></Parameter>
@@ -935,7 +935,7 @@
   srs="+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over">
     <StyleName>landuse_overlays</StyleName>
     <Datasource>
-       <Parameter name="dbname"><![CDATA[osm2]]></Parameter>
+       <Parameter name="dbname"><![CDATA[osm]]></Parameter>
        
        <Parameter name="geometry_field"><![CDATA[way]]></Parameter>
        <Parameter name="host"><![CDATA[198.61.219.70]]></Parameter>
@@ -983,7 +983,7 @@
   srs="+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over">
     <StyleName>admin</StyleName>
     <Datasource>
-       <Parameter name="dbname"><![CDATA[osm2]]></Parameter>
+       <Parameter name="dbname"><![CDATA[osm]]></Parameter>
        
        <Parameter name="geometry_field"><![CDATA[way]]></Parameter>
        <Parameter name="host"><![CDATA[198.61.219.70]]></Parameter>
@@ -1074,7 +1074,7 @@
   srs="+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over">
     <StyleName>buildings</StyleName>
     <Datasource>
-       <Parameter name="dbname"><![CDATA[osm2]]></Parameter>
+       <Parameter name="dbname"><![CDATA[osm]]></Parameter>
        
        <Parameter name="geometry_field"><![CDATA[way]]></Parameter>
        <Parameter name="host"><![CDATA[198.61.219.70]]></Parameter>
@@ -1207,7 +1207,7 @@
   srs="+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over">
     <StyleName>aeroway</StyleName>
     <Datasource>
-       <Parameter name="dbname"><![CDATA[osm2]]></Parameter>
+       <Parameter name="dbname"><![CDATA[osm]]></Parameter>
        
        <Parameter name="geometry_field"><![CDATA[way]]></Parameter>
        <Parameter name="host"><![CDATA[198.61.219.70]]></Parameter>
@@ -15895,7 +15895,7 @@
   srs="+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over">
     <StyleName>tunnel</StyleName>
     <Datasource>
-       <Parameter name="dbname"><![CDATA[osm2]]></Parameter>
+       <Parameter name="dbname"><![CDATA[osm]]></Parameter>
        
        <Parameter name="geometry_field"><![CDATA[way]]></Parameter>
        <Parameter name="host"><![CDATA[198.61.219.70]]></Parameter>
@@ -15960,7 +15960,7 @@
   srs="+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over">
     <StyleName>turning_circle_case</StyleName>
     <Datasource>
-       <Parameter name="dbname"><![CDATA[osm2]]></Parameter>
+       <Parameter name="dbname"><![CDATA[osm]]></Parameter>
        
        <Parameter name="geometry_field"><![CDATA[way]]></Parameter>
        <Parameter name="host"><![CDATA[198.61.219.70]]></Parameter>
@@ -30589,7 +30589,7 @@
     <StyleName>roads_high-outline</StyleName>
     <StyleName>roads_high</StyleName>
     <Datasource>
-       <Parameter name="dbname"><![CDATA[osm2]]></Parameter>
+       <Parameter name="dbname"><![CDATA[osm]]></Parameter>
        
        <Parameter name="geometry_field"><![CDATA[way]]></Parameter>
        <Parameter name="host"><![CDATA[198.61.219.70]]></Parameter>
@@ -30702,7 +30702,7 @@
   srs="+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over">
     <StyleName>roads_med</StyleName>
     <Datasource>
-       <Parameter name="dbname"><![CDATA[osm2]]></Parameter>
+       <Parameter name="dbname"><![CDATA[osm]]></Parameter>
        
        <Parameter name="geometry_field"><![CDATA[way]]></Parameter>
        <Parameter name="host"><![CDATA[198.61.219.70]]></Parameter>
@@ -30772,7 +30772,7 @@
   srs="+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over">
     <StyleName>roads_low</StyleName>
     <Datasource>
-       <Parameter name="dbname"><![CDATA[osm2]]></Parameter>
+       <Parameter name="dbname"><![CDATA[osm]]></Parameter>
        
        <Parameter name="geometry_field"><![CDATA[way]]></Parameter>
        <Parameter name="host"><![CDATA[198.61.219.70]]></Parameter>
@@ -30817,7 +30817,7 @@
   srs="+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over">
     <StyleName>turning_circle_fill</StyleName>
     <Datasource>
-       <Parameter name="dbname"><![CDATA[osm2]]></Parameter>
+       <Parameter name="dbname"><![CDATA[osm]]></Parameter>
        
        <Parameter name="geometry_field"><![CDATA[way]]></Parameter>
        <Parameter name="host"><![CDATA[198.61.219.70]]></Parameter>
@@ -45503,7 +45503,7 @@
   srs="+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over">
     <StyleName>bridge</StyleName>
     <Datasource>
-       <Parameter name="dbname"><![CDATA[osm2]]></Parameter>
+       <Parameter name="dbname"><![CDATA[osm]]></Parameter>
        
        <Parameter name="geometry_field"><![CDATA[way]]></Parameter>
        <Parameter name="host"><![CDATA[198.61.219.70]]></Parameter>
@@ -47633,7 +47633,7 @@
   srs="+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over">
     <StyleName>area_label</StyleName>
     <Datasource>
-       <Parameter name="dbname"><![CDATA[osm2]]></Parameter>
+       <Parameter name="dbname"><![CDATA[osm]]></Parameter>
        
        <Parameter name="geometry_field"><![CDATA[way]]></Parameter>
        <Parameter name="host"><![CDATA[198.61.219.70]]></Parameter>
@@ -50573,7 +50573,7 @@
   srs="+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over">
     <StyleName>motorway_label</StyleName>
     <Datasource>
-       <Parameter name="dbname"><![CDATA[osm2]]></Parameter>
+       <Parameter name="dbname"><![CDATA[osm]]></Parameter>
        
        <Parameter name="geometry_field"><![CDATA[way]]></Parameter>
        <Parameter name="host"><![CDATA[198.61.219.70]]></Parameter>
@@ -50804,7 +50804,7 @@
   srs="+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over">
     <StyleName>mainroad_label</StyleName>
     <Datasource>
-       <Parameter name="dbname"><![CDATA[osm2]]></Parameter>
+       <Parameter name="dbname"><![CDATA[osm]]></Parameter>
        
        <Parameter name="geometry_field"><![CDATA[way]]></Parameter>
        <Parameter name="host"><![CDATA[198.61.219.70]]></Parameter>
@@ -50886,7 +50886,7 @@
   srs="+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over">
     <StyleName>minorroad_label</StyleName>
     <Datasource>
-       <Parameter name="dbname"><![CDATA[osm2]]></Parameter>
+       <Parameter name="dbname"><![CDATA[osm]]></Parameter>
        
        <Parameter name="geometry_field"><![CDATA[way]]></Parameter>
        <Parameter name="host"><![CDATA[198.61.219.70]]></Parameter>
@@ -50969,7 +50969,7 @@
   srs="+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over">
     <StyleName>waterway_label</StyleName>
     <Datasource>
-       <Parameter name="dbname"><![CDATA[osm2]]></Parameter>
+       <Parameter name="dbname"><![CDATA[osm]]></Parameter>
        
        <Parameter name="geometry_field"><![CDATA[way]]></Parameter>
        <Parameter name="host"><![CDATA[198.61.219.70]]></Parameter>

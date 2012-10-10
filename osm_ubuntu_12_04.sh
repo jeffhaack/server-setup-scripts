@@ -43,19 +43,6 @@ OSMOSIS=/bin/osmosis
 OSM2PGSQL=/usr/bin/osm2pgsql
 MAPNIK_PYTHON_DIR=/var/lib/python-support/python2.7/mapnik/
 
-if [[ "$1" == "-y" ]] ; then
-	SKIP_PROMPTING="yes"
-fi
-
-cd $HOME
-# Update apt-get (can use a switch to turn off updating during testing)
-if [[ "$1" == "--no-update" || "$1" == "-nu" || "$1" == "-y" ]] ; then
-	echo "Not updating apt-get..."
-else
-	echo "Updating apt-get..."
-	sudo apt-get update
-fi
-
 # Make directories
 if [ ! -d $SRC ]; then
 	echo "Making directory $SRC"
@@ -76,35 +63,31 @@ else
 	echo "Directory $BIN exists"
 fi
 
-# Install PostGIS
-if [ ! -x $POSTGRESQL ]; then
-	echo "Installing PostgreSQL 8.4 and PostGIS extensions..."
-	sudo apt-get -y install postgresql postgresql-8.4-postgis postgresql-contrib-8.4
-	# Adjust PostgreSQL settings all to trust locally
-	# And adjust settings for import
-	echo "*********************************************"
-	echo "*****  Making PostgreSQL very trusting  *****"
-	echo "*********************************************"
-	sed -i s/"ident"/"trust"/ /etc/postgresql/8.4/main/pg_hba.conf
-	sed -i s/"md5"/"trust"/ /etc/postgresql/8.4/main/pg_hba.conf
-	sed -i s/"shared_buffers = 24MB"/"shared_buffers = 128MB"/ /etc/postgresql/8.4/main/postgresql.conf
-	sed -i s/"#checkpoint_segments = 3"/"checkpoint_segments = 20"/ /etc/postgresql/8.4/main/postgresql.conf
-	sed -i s/"#maintenance_work_mem = 16MB"/"maintenance_work_mem = 256MB"/ /etc/postgresql/8.4/main/postgresql.conf
-	sed -i s/"#autovacuum = on"/"autovacuum = off"/ /etc/postgresql/8.4/main/postgresql.conf
-	sudo sh -c "echo 'kernel.shmmax=268435456' > /etc/sysctl.d/60-shmmax.conf"
-	sudo service procps start
-	sudo /etc/init.d/postgresql restart
-else
-	echo "PostgreSQL 8.4 and PostGIS extensions already installed..."
-fi
+echo "Installing PostgreSQL 9.1 and PostGIS extensions..."
+sudo apt-get -y install python-software-properties
+sudo add-apt-repository -y ppa:pitti/postgresql
+sudo apt-get update
+sudo apt-get -y install postgresql-9.1 postgresql-9.1-postgis postgresql-contrib-9.1 libpq-dev
+# Adjust PostgreSQL settings all to trust locally
+# And adjust settings for import
+echo "*********************************************"
+echo "*****  Making PostgreSQL very trusting  *****"
+echo "*********************************************"
+sed -i s/"ident"/"trust"/ /etc/postgresql/9.1/main/pg_hba.conf
+sed -i s/"md5"/"trust"/ /etc/postgresql/9.1/main/pg_hba.conf
+sed -i s/"peer"/"trust"/ /etc/postgresql/9.1/main/pg_hba.conf
+sed -i s/"shared_buffers = 24MB"/"shared_buffers = 128MB"/ /etc/postgresql/9.1/main/postgresql.conf
+sed -i s/"#checkpoint_segments = 3"/"checkpoint_segments = 20"/ /etc/postgresql/9.1/main/postgresql.conf
+sed -i s/"#maintenance_work_mem = 16MB"/"maintenance_work_mem = 256MB"/ /etc/postgresql/9.1/main/postgresql.conf
+sed -i s/"#autovacuum = on"/"autovacuum = off"/ /etc/postgresql/9.1/main/postgresql.conf
+sudo sh -c "echo 'kernel.shmmax=268435456' > /etc/sysctl.d/60-shmmax.conf"
+sudo service procps start
+sudo /etc/init.d/postgresql restart
+
 
 # Install Apache
-if [ ! -x $APACHE ]; then
-	echo "Installing Apache2..."
-	sudo apt-get -y install apache2
-else
-	echo "Apache already installed..."
-fi
+echo "Installing Apache2..."
+sudo apt-get -y install apache2
 
 # Setup Osmosis
 if [ ! -x $OSMOSIS ]; then
@@ -124,6 +107,8 @@ fi
 # Install osm2pgsql
 if [ ! -x $OSM2PGSQL ]; then
 	echo "Installing Osm2pgsql..."
+	sudo add-apt-repository -y ppa:kakrueger/openstreetmap
+	sudo apt-get update
 	sudo apt-get -y install osm2pgsql
 else
 	echo "Osm2pgsql already installed..."
@@ -132,7 +117,7 @@ fi
 # Install Mapnik
 if [ ! -d $MAPNIK_PYTHON_DIR ]; then
 	echo "Installing Mapnik..."
-	sudo apt-get -y install libmapnik0.7 libmapnik-dev mapnik-utils python-mapnik
+	sudo apt-get -y install libmapnik2-2.0 libmapnik2-dev mapnik-utils python-mapnik2
 else
 	echo "Mapnik already installed..."
 fi
@@ -145,10 +130,10 @@ else
 fi
 if [[ "$make_osm" == [Yy] ]]; then
     psql -U postgres -c "create database $DB_NAME;"
-    psql -U postgres -d $DB_NAME -c "create language plpgsql;"
-    psql -U postgres -d $DB_NAME -f /usr/share/postgresql/8.4/contrib/postgis-1.5/postgis.sql
-    psql -U postgres -d $DB_NAME -f /usr/share/postgresql/8.4/contrib/postgis-1.5/spatial_ref_sys.sql
-    psql -U postgres -d $DB_NAME -f /usr/share/postgresql/8.4/contrib/_int.sql # need this for the diff updating
+#    psql -U postgres -d $DB_NAME -c "create language plpgsql;"
+    psql -U postgres -d $DB_NAME -f /usr/share/postgresql/9.1/contrib/postgis-1.5/postgis.sql
+    psql -U postgres -d $DB_NAME -f /usr/share/postgresql/9.1/contrib/postgis-1.5/spatial_ref_sys.sql
+    psql -U postgres -d $DB_NAME -f /usr/share/postgresql/9.1/contrib/_int.sql # need this for the diff updating ???
 fi
 
 # Get data
@@ -172,22 +157,30 @@ if [[ "$make_osm" == [Yy] && "$get_data" == [Yy] ]]; then
 	if [[ "$import_data" == [Yy] ]]; then
 		##############################
 		### Making it multilingual ###
-		cp /usr/share/osm2pgsql/default.style $OSM2PGSQL_STYLESHEET
+		cd $DATA
+		wget http://svn.openstreetmap.org/applications/utils/export/osm2pgsql/default.style
+		mv default.style $OSM2PGSQL_STYLESHEET
 		echo "node,way   $LANGUAGE      text         linear" >> $OSM2PGSQL_STYLESHEET
 		##############################
-
-		osm2pgsql --slim -U postgres -d $DB_NAME -S $OSM2PGSQL_STYLESHEET -C 2048 $DATA/$OSM_FILE
+		# add --cache-strategy sparse if using osm2pgsql >0.8 (if built osm2pgsql from source)
+		osm2pgsql --slim -U postgres -d $DB_NAME -S $OSM2PGSQL_STYLESHEET --cache-strategy sparse --cache 10 $DATA/$OSM_FILE
 	fi
 else
 	echo "Not importing file into database..."
-	#read -p "Import the data file into your database? (y/n): " import_data
-	#if [[ "$import_data" == [Yy] ]]; then
-	#	read -p "What is the database name? (default: $DB_NAME): " DB_NAME
-	#	read -p "What is the file name? (default: $DATA/$COUNTRY.osm.bz2): " FILE_NAME
-	#	cd $DATA
-	#	osm2pgsql --slim -U postgres -d $DB_NAME -C 2048 $FILE_NAME
-	#fi
 fi
+
+
+######
+# This installs the osm mapnik tools, basically gets the big shapefiles we needs and gives a fallback stylsheet
+#cd $SRC
+#sudo apt-get -y install subversion unzip
+#svn co http://svn.openstreetmap.org/applications/rendering/mapnik
+#cd mapnik
+#./get-coastlines.sh
+#./generate_xml.py --dbname osm --user postgres --accept-none
+#./generate_image.py
+#cp image.png /var/www
+#####
 
 # Setup Minutely Mapnik updates
 if [[ ! "$1" == "-y" ]] ; then
@@ -213,7 +206,7 @@ if [[ "$update_diffs" == [Yy] ]]; then
 	wget "http://toolserver.org/~mazder/replicate-sequences/?Y=$YEAR&m=$MONTH&d=$DAY&H=$HOUR&i=$MINUTE&s=$SECOND&stream=minute#" -O $DIFF_WORKDIR/state.txt
 	sed -i s/"minute-replicate"/"replication\/minute"/ $DIFF_WORKDIR/configuration.txt
 	osmosis -q --rri workingDirectory=$DIFF_WORKDIR --simc --write-xml-change $DATA/changes.osc.gz
-	osm2pgsql -a -s -b "$MIN_LON,$MIN_LAT,$MAX_LON,$MAX_LAT" -U postgres -d $DB_NAME -e 15 -o $DATA/expire.list -S $OSM2PGSQL_STYLESHEET $DATA/changes.osc.gz
+	osm2pgsql -a -s -b "$MIN_LON,$MIN_LAT,$MAX_LON,$MAX_LAT" -U postgres -d $DB_NAME -e 15 -o $DATA/expire.list -S $OSM2PGSQL_STYLESHEET --cache-strategy sparse --cache 10 $DATA/changes.osc.gz
 fi
 
 # Setup Cron Job
@@ -259,7 +252,7 @@ rm \$DATA/changes.osc.gz
 #wget \"http://toolserver.org/~mazder/replicate-sequences/?Y=\$YEAR&m=\$MONTH&d=\$DAY&H=\$HOUR&i=\$MINUTE&s=\$SECOND&stream=minute#\" -O \$DIFF_WORKDIR/state.txt
 #sed -i s/\"minute-replicate\"/\"replication\/minute\"/ \$DIFF_WORKDIR/configuration.txt
 osmosis -q --rri workingDirectory=\$DIFF_WORKDIR --simc --write-xml-change \$DATA/changes.osc.gz
-osm2pgsql -a -s -b \"\$MIN_LON,\$MIN_LAT,\$MAX_LON,\$MAX_LAT\" -U postgres -d \$DB_NAME -e 15 -o \$DATA/expire.list -S $OSM2PGSQL_STYLESHEET \$DATA/changes.osc.gz" > $DATA/update_osm_db.sh
+osm2pgsql -a -s -b \"\$MIN_LON,\$MIN_LAT,\$MAX_LON,\$MAX_LAT\" -U postgres -d \$DB_NAME -e 15 -o \$DATA/expire.list -S $OSM2PGSQL_STYLESHEET --cache-strategy sparse --cache 10 \$DATA/changes.osc.gz" > $DATA/update_osm_db.sh
 
 	chmod +x $DATA/update_osm_db.sh
 	#write out current crontab
@@ -284,6 +277,7 @@ echo "Go to http://$IP/image.png to see."
 sudo apt-get -y install unzip
 cd $DATA
 mkdir shp
+cd shp
 wget http://mapbox-geodata.s3.amazonaws.com/natural-earth-1.3.0/physical/10m-land.zip
 wget http://tilemill-data.s3.amazonaws.com/osm/coastline-good.zip
 wget http://tilemill-data.s3.amazonaws.com/osm/shoreline_300.zip
@@ -348,28 +342,3 @@ sed -i s/"TILE_LOCATION"/"$IP\/my_tiles"/ /var/www/map.html
 echo "Go to http://$IP/map.html to see."
 
 ################################################################################################
-
-
-
-
-# can't get mapnik2.0 to build on ubuntu 11.04
-
-#- install mapserver wms
-#- install sds
-#later:
-#- install osm routing engine
-
-
-# Get the planet
-#wget http://planet.openstreetmap.org/planet/planet-latest.osm.bz2
-
-# Extract the Caucasus
-#bzcat planet-latest.osm.bz2 | osmosis\
-#  --read-xml enableDateParsing=no file=-\
-#  --bounding-box top=43.92 left=39.04 bottom=37.76 right=51.46 --write-xml file=-\
-#  | bzip2 > caucasus.osm.bz2
-
-# Extract via polygon
-#osmosis --read-xml file="planet-latest.osm" --bounding-polygon file="country.poly" --write-xml file="australia.osm"
-
-
