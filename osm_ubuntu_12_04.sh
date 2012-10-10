@@ -277,6 +277,8 @@ unzip shoreline_300.zip
 
 # Setup Mapnik for OSM basics
 cd mapnik
+mkdir osm
+mkdir osm/tiles
 chmod +x generate_image.py
 chmod +x generate_tiles.py
 ./generate_image.py

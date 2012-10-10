@@ -217,6 +217,6 @@ if __name__ == "__main__":
     bbox = (-2, 50.0,1.0,52.0)
     #render_tiles(bbox, mapfile, tile_dir, minZoom, maxZoom)
 
-    # Muenchen
-    bbox = (11.4,48.07, 11.7,48.22)
-    #render_tiles(bbox, mapfile, tile_dir, 1, 12 , "Muenchen")
+    # Gaza
+    bbox = (34.129,30.9894,34.6893,31.7258)
+    render_tiles(bbox, mapfile, tile_dir, 11, 12 , "Gaza")
