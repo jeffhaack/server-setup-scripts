@@ -197,7 +197,7 @@ if __name__ == "__main__":
     try:
         tile_dir = os.environ['MAPNIK_TILE_DIR']
     except KeyError:
-        tile_dir = home + "/mapnik/osm/tiles/"
+        tile_dir = home + "/server-setup-scripts/mapnik/osm/tiles/"
 
     if not tile_dir.endswith('/'):
         tile_dir = tile_dir + '/'
