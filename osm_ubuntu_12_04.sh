@@ -133,7 +133,7 @@ if [[ "$make_osm" == [Yy] ]]; then
 #    psql -U postgres -d $DB_NAME -c "create language plpgsql;"
     psql -U postgres -d $DB_NAME -f /usr/share/postgresql/9.1/contrib/postgis-1.5/postgis.sql
     psql -U postgres -d $DB_NAME -f /usr/share/postgresql/9.1/contrib/postgis-1.5/spatial_ref_sys.sql
-    psql -U postgres -d $DB_NAME -f /usr/share/postgresql/9.1/contrib/_int.sql # need this for the diff updating ???
+    #psql -U postgres -d $DB_NAME -f /usr/share/postgresql/9.1/contrib/_int.sql # need this for the diff updating ???
 fi
 
 # Get data
@@ -162,7 +162,6 @@ if [[ "$make_osm" == [Yy] && "$get_data" == [Yy] ]]; then
 		mv default.style $OSM2PGSQL_STYLESHEET
 		echo "node,way   $LANGUAGE      text         linear" >> $OSM2PGSQL_STYLESHEET
 		##############################
-		# add --cache-strategy sparse if using osm2pgsql >0.8 (if built osm2pgsql from source)
 		osm2pgsql --slim -U postgres -d $DB_NAME -S $OSM2PGSQL_STYLESHEET --cache-strategy sparse --cache 10 $DATA/$OSM_FILE
 	fi
 else
@@ -264,15 +263,6 @@ osm2pgsql -a -s -b \"\$MIN_LON,\$MIN_LAT,\$MAX_LON,\$MAX_LAT\" -U postgres -d \$
 	rm mycron
 fi
 
-# Setup Mapnik for OSM basics
-cd mapnik
-chmod +x generate_image.py
-chmod +x generate_tiles.py
-./generate_image.py
-cp image.png /var/www
-IP=$(curl ifconfig.me)
-echo "Go to http://$IP/image.png to see."
-
 # Get shapefile data
 sudo apt-get -y install unzip
 cd $DATA
@@ -285,60 +275,59 @@ unzip 10m-land.zip
 unzip coastline-good.zip
 unzip shoreline_300.zip
 
-
-# Set up mod_tile and renderd
-# First retrieve and install the stuff
-cd $BIN
-sudo apt-get -y install subversion autoconf make
-sudo apt-get -y install libagg-dev apache2-prefork-dev
-svn co http://svn.openstreetmap.org/applications/utils/mod_tile
-cd mod_tile
-./autogen.sh
-sed -i s/"#define MAPNIK_PLUGINS \"\/usr\/local\/lib64\/mapnik\/input\""/"#define MAPNIK_PLUGINS \"\/usr\/lib64\/mapnik\/0.7\/input\/\""/ render_config.h
-sed -i s/"\/usr\/local\/lib64\/mapnik\/fonts"/"\/usr\/share\/fonts"/ render_config.h
-sed -i s/"#define FONT_RECURSE 0"/"#define FONT_RECURSE 3"/ render_config.h
-./configure
-make
-make install
-make install-mod_tile
-ldconfig
-
-# Edit the apache module settings in mod_tile.conf
-cp mod_tile.conf /etc/apache2/conf.d
-sed -i s/"<VirtualHost *:80>"/"<VirtualHost *>"/ /etc/apache2/conf.d/mod_tile.conf
-sed -i s/"modules\/mod_tile.so"/"\/usr\/lib\/apache2\/modules\/mod_tile.so"/ /etc/apache2/conf.d/mod_tile.conf
+# Setup Mapnik for OSM basics
+cd mapnik
+chmod +x generate_image.py
+chmod +x generate_tiles.py
+./generate_image.py
+cp image.png /var/www
 IP=$(curl ifconfig.me)
-sed -i s/"a.tile.openstreetmap.org b.tile.openstreetmap.org c.tile.openstreetmap.org d.tile.openstreetmap.org"/"$IP"/ /etc/apache2/conf.d/mod_tile.conf
-sed -i s/"\/var\/www\/html"/"\/var\/www"/ /etc/apache2/conf.d/mod_tile.conf
-sed -i s/"\/var\/run\/renderd\/renderd.sock"/"\/tmp\/osm-renderd"/ /etc/apache2/conf.d/mod_tile.conf
+echo "Go to http://$IP/image.png to see."
+
+
+# see http://switch2osm.org/serving-tiles/building-a-tile-server-from-packages/
+sudo apt-get install libapache2-mod-tile
+touch /var/lib/mod_tile/planet-import-complete # the timestamp on this will tell mod_tile when to re-render tiles (shouldn't be useful for me though, cause i need an expiry list)
+
+# Edit /etc/apache2/sites-available/tileserver_site
+IP=$(curl ifconfig.me)
+sed -i s/"a.tile.openstreetmap.org b.tile.openstreetmap.org c.tile.openstreetmap.org d.tile.openstreetmap.org"/"$IP"/ /etc/apache2/sites-available/tileserver_site
 
 # Now edit the renderd daemon settings
+rm /etc/renderd.conf
 touch /etc/renderd.conf
 echo "[renderd]
-;socketname=/var/run/renderd/renderd.sock
+stats_file=/var/run/renderd/renderd.stats
+socketname=/var/run/renderd/renderd.sock
 num_threads=4
 tile_dir=/var/lib/mod_tile ; DOES NOT WORK YET
-stats_file=/root/bin/renderd.stats
 
 [mapnik]
-plugins_dir=/usr/lib64/mapnik/0.7/input
-font_dir=/usr/share/fonts
-font_dir_recurse=3
+plugins_dir=/usr/lib/mapnik/2.0/input
+font_dir=/usr/share/fonts/truetype/ttf-dejavu
+font_dir_recurse=false
 
 [default]
-URI=/my_tiles/
-XML=/root/server-setup-scripts/mapnik/osm.xml
-HOST=198.101.248.107
+URI=/osm/
+XML=/root/src/mapnik/osm.xml
+DESCRIPTION=This is the standard osm mapnik style
+;ATTRIBUTION=&copy;<a href=\"http://www.openstreetmap.org/\">OpenStreetMap</a> and <a href=\"http://wiki.openstreetmap.org/w\
+iki/Contributors\">contributors</a>, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>
+;HOST=$IP
+;SERVER_ALIAS=$IP
 ;HTCPHOST=proxy.openstreetmap.org" > /etc/renderd.conf
 
-# And start up the daemon and restart Apache
+# And restart up the daemon and restart Apache
+sudo /etc/init.d/renderd restart
+sudo /etc/init.d/apache2 restart
+
 $BIN/mod_tile/renderd
 /etc/init.d/apache2 restart
 
 # Add our sample map.html to /var/ww
 cd $SETUP
 cp mapnik/map.html /var/www/map.html
-sed -i s/"TILE_LOCATION"/"$IP\/my_tiles"/ /var/www/map.html
+sed -i s/"TILE_LOCATION"/"$IP\/osm"/ /var/www/map.html
 echo "Go to http://$IP/map.html to see."
 
 ################################################################################################
